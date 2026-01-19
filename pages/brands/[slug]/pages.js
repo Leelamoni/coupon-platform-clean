@@ -132,6 +132,41 @@ export default function BrandPage({ brand, coupons }) {
           </ul>
         </div>
       </div>
+      <script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": `${brandName} Coupons & Deals`,
+      "url": `https://coupon-platform-clean-production.up.railway.app/brands/${brand.slug}`,
+      "description":
+        brand.seoDescription ||
+        `Find verified ${brandName} coupon codes, promo codes, and best deals today.`,
+      "publisher": {
+        "@type": "Organization",
+        "name": "Global Coupons Hub",
+        "url": "https://coupon-platform-clean-production.up.railway.app"
+      },
+      "mainEntity": {
+        "@type": "ItemList",
+        "itemListElement": coupons.map((c, index) => ({
+          "@type": "Offer",
+          "position": index + 1,
+          "name": c.title,
+          "description": c.description,
+          "url": `${process.env.NEXT_PUBLIC_API_URL}/out/${c._id}`,
+          "availability": "https://schema.org/InStock",
+          "seller": {
+            "@type": "Brand",
+            "name": brandName
+          }
+        }))
+      }
+    })
+  }}
+/>
+
     </>
   );
 }
